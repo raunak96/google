@@ -22,15 +22,17 @@ const SearchPage = ({ data }) => {
 export default SearchPage;
 
 export const getServerSideProps = async cxt => {
-	const useDummyData = true;
+	const useDummyData = false;
 	const { query } = cxt;
-	const { q, pageNumber } = query;
+	const { q, start } = query;
 	if (useDummyData) return { props: { data: dummyData } };
-	// const { data } = await axios.get(
-	// 	`https://www.googleapis.com/customsearch/v1?key=${process.env.API_KEY}&cx=${process.env.CONTEXT_KEY}&q=${q}&start=${pageNumber}`
-	// );
+	const { data } = await axios.get(
+		`https://www.googleapis.com/customsearch/v1?key=${
+			process.env.API_KEY
+		}&cx=${process.env.CONTEXT_KEY}&q=${q}&start=${start ?? "0"}`
+	);
 
-	// return {
-	// 	props: { data },
-	// };
+	return {
+		props: { data },
+	};
 };
